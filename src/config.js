@@ -11,12 +11,10 @@ module.exports = {
   },
   mongodb_production: {
     ip:'127.0.0.1',
-    port: '2025',
     app:'pos',
   },
   mongodb_local: {
     ip:'127.0.0.1',
-    port: '2025',
     app:'pos',
   },
   url: {
