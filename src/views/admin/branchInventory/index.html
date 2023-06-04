@@ -1,0 +1,278 @@
+<div class="wrapper">
+    {{> admin-sidenav branchInventory=true}}
+    <div class="content-page">
+      <div class="content">
+        {{> admin-topnav}}
+  
+        <!-- Start Content-->
+        <div class="container-fluid">
+          <!-- start page title -->
+          <div class="row">
+            <div class="col-12">
+              <div class="page-title-box">
+                <h4 class="page-title">{{toUpperCharAt credentials.type}}</h4>
+              </div>
+            </div>
+          </div>
+          <!-- end page title -->
+          <div class="col-12 mt-5">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <button
+                      class="btn btn-danger mb-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#filterModal"
+                    >
+                      <i class="mdi mdi-plus-circle me-2"></i> Filter
+                    </button>
+                    <button
+                    class="btn btn-warning mb-2 me-2"
+                    onclick="PrintElem('invoice-POS')"
+                  >
+                    <i class="uil-print me-1"></i>
+                    Print
+                  </button>
+                  </div>
+                </div>
+                <div class="table-responsive" id="invoice-POS">
+                  <div class="info mb-2">
+                    <h1
+                      style="
+                        font-size: 20px !important;
+                        font-weight: 700 !important;
+                        color: black !important;
+                      "
+                      class="text-center text-black"
+                    >
+                    AGRO
+                    </h1>
+                    <h3
+                      style="
+                        font-size: 20px !important;
+                        font-weight: 700 !important;
+                        color: black !important;
+                      "
+                      class="text-center text-black"
+                    >
+                    INDUSTRIAL PRODUCT AND SUPPLY MANAGEMENT SYSTEM 
+                    </h3>
+                    <h5
+                    style="
+                      font-size: 20px !important;
+                      font-weight: 700 !important;
+                      color: black !important;
+                    "
+                    class="text-center text-black"
+                  >
+                    BRANCH INVENTORY
+                  </h5>
+                    <!-- <p
+                      style="
+                        font-size: 12px !important;
+                        font-weight: 700 !important;
+                        color: black !important;
+                      "
+                      class="text-center text-black mb-3"
+                    >
+                      Purok-15 Bagontaas, Valencia City, Bukidnon
+                    </p> -->
+                    {{#if isSearch}}
+                    <p
+                      style="
+                        font-size: 12px !important;
+                        font-weight: 700 !important;
+                        color: black !important;
+                      "
+                      class="text-black" id="customer_info"
+                    >
+                    {{#if isSearchDate }}
+                    <span class="font-18">Date: </span><span class="font-18"  id="dates">{{moment selected_startDate 'lll'}} - {{moment selected_endDate 'lll'}}</span><br />
+                    {{/if}}
+                    {{#if isSearchName}}
+                    <span class="font-18">Customer</span><span> : </span
+                    ><span class="font-18" id="stokistfname"> {{selected_user.firstname}} {{selected_user.lastname}}</span
+                    ><span class="ms-1 font-18" id="stokistlname"></span><br />
+                    <span class="font-18">Address : {{selected_user.address}}<br /></span>
+                    {{/if}}
+                    </p>
+                    {{/if}}
+                  </div>
+                  {{#if isInventorySearch}}
+                  <table
+                  class="table table-centered table-striped dt-responsive nowrap w-100"
+                  id="data-datatable"
+                >
+                  <thead>
+                    <tr>
+                      <!-- <th>Customer</th> -->
+                      <th>Product name</th>
+                      <th>Product ID</th>
+                      <th>Expired date</th>
+                      <th>Unit</th>
+                      <th>Category</th>
+                      <th>Quantity</th>
+                      <th>Price</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{#each branchInventory}}
+                    <tr>
+                      <!-- <td>
+                        {{replaceName this.user_id.firstname
+                        sales.user_id.email}} {{this.user_id.lastname}}
+                      </td> -->
+                      <td>{{this.name}}</td>
+                      <td class="fw-bolder text-muted">{{this.code}}</td>
+                      <td class="{{expire_color this.expiry_date}}">{{moment this.expiry_date 'MMMM DD YYYY'}}</td>
+                      <td>{{this.unitName}}</td>
+                      <td>{{this.categoryName}}</td>
+                      <td>{{this.total}}</td>
+                      <td>{{this.price}}</td>
+                      <td>{{this.totalStocks}}</td>
+                    </tr>
+                    {{/each}}
+                    <tr>
+                      <td>Total</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td class="fw-bold text-danger">₱ {{totalStocks branchInventory }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                  {{else}}
+                  <h2 class="text-center mt-5">Please Filter First!</h2>
+                  {{/if}}
+
+                </div>
+              </div>
+              <!-- end card-body-->
+            </div>
+            <!-- end card-->
+          </div>
+          <!-- end col -->
+          <!--- CHARTTTTTT -->
+          <!-- <div class="card mt-2">
+            <div class="card-body">
+              <h5>Inventory</h5>
+              <canvas id="myChart1" height="50"></canvas>
+            </div>
+          </div> -->
+        </div>
+        <!-- end row -->
+      </div>
+  
+      <!-- container -->
+    </div>
+  </div>
+  
+  <!-- Right modal content -->
+  <div
+    class="modal fade"
+    id="filterModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Filter</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body pb-5">
+          <form action="/admin/brnachInventory/search" method="POST">
+            <p>Select user</p>
+            <select name="user_id" class="form-control mb-2" id="usersOption">
+            </select>
+            <p>Stockout date start</p>
+            <input name="startDate" type="date" class="form-control mb-2" />
+            <p>Stockout date end</p>
+            <input name="endDate" type="date" class="form-control mb-4" />
+            <button class="btn btn-primary" style="float: right">
+              Filter sales
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    $(document).ready(function () {
+//       let labelsProduct = '{{labelsProduct}}';
+//       let totalProduct = '{{totalProduct}}';
+//       let colorProduct = '{{colorProduct}}';
+//       labelsProduct = labelsProduct.split(',');
+//       totalProduct = totalProduct.split(',');
+//       colorProduct = colorProduct.replaceAll(',r', 'r');
+//       colorProduct = colorProduct.split('-');
+//     console.log('labelsProduct', labelsProduct);
+//   console.log('totalProduct', totalProduct);
+    //   const ctx = document.getElementById('myChart').getContext('2d');
+    //   const myChart = new Chart(ctx, {
+    //     type: 'bar',
+    //     data: {
+    //       labels: [...labelsProduct],
+    //       datasets: [
+    //         {
+    //           label: 'Sales',
+    //           data: [...totalProduct],
+    //           backgroundColor: [...colorProduct],
+    //           borderColor: [...colorProduct],
+    //           borderWidth: 1,
+    //         },
+    //       ],
+    //     },
+    //     options: {
+    //       scales: {
+    //         y: {
+    //           beginAtZero: true,
+    //         },
+    //       },
+    //     },
+    //   });
+    });
+  </script>
+  
+  <script>
+    $(document).ready(function () {
+      //GET ALL CLIENT USERS
+      $.ajax({
+        type: 'GET',
+        url: `/get/all-user`,
+        success: function (result) {
+          result.map((r) => {
+            $(`#usersOption`).append(
+              `<option value="${r._id}">${r.firstname ? r.firstname : r.email} ${
+                r.lastname ? r.lastname : ''
+              }</option>`
+            );
+          });
+        },
+      }).fail(function (res) {
+        errorSweetAlert();
+      });
+    });
+  </script>
+  <script>
+    function PrintElem(elem) {
+        var restorepage = $('body').html();
+        var printcontent = $('#' + elem).clone();
+        $('body').empty().html(printcontent);
+        window.print();
+        $('body').html(restorepage);
+        window.location.href = "/admin/sales?message=Print successfully !!&alert=success";
+    }
+  </script>

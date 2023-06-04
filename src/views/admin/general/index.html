@@ -1,0 +1,228 @@
+<div class="wrapper">
+  {{> admin-sidenav general=true}}
+  <div class="content-page">
+    <div class="content">
+      {{> admin-topnav}}
+
+      <!-- Start Content-->
+      <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+          <div class="col-12">
+            <div class="page-title-box">
+              <h4 class="page-title">Stock in / Stock out</h4>
+            </div>
+          </div>
+        </div>
+
+        <!-- end page title -->
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-4">
+                  <h3>Grand total: {{grandTotal}}</h3>
+                </div>
+                <div class="col-8">
+                  <form
+                    id="myForm"
+                    action="/admin/general/search"
+                    method="POST"
+                  >
+                    <div class="row">
+                      <div class="col-3"></div>
+                      <div class="col-3">
+                        <span class="ml-5">Select type</span>
+                        <select
+                          name="type"
+                          class="form-select"
+                          onchange="search()"
+                          id="type"
+                        >
+                          <option value="{{type}}" hidden>{{type}}</option>
+                          <option value="all">all</option>
+                          <option value="stock in">stock in</option>
+                          <option value="stock out">stock out</option>
+                        </select>
+                      </div>
+                      <div class="col-3">
+                        <span class="ml-5">From</span>
+                        <input
+                          id="fromDate"
+                          name="fromDate"
+                          type="date"
+                          class="form-select"
+                          onchange="search()"
+                          value="{{fromDate}}"
+                        />
+                      </div>
+                      <div class="col-3">
+                        <span class="ml-2">To</span>
+                        <input
+                          id="toDate"
+                          name="toDate"
+                          type="date"
+                          class="form-select"
+                          onchange="search()"
+                          value="{{toDate}}"
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-4">
+                  <button
+                  class="btn btn-warning"
+                  onclick="PrintElem('invoice-POS')"
+                >
+                  <i class="uil-print me-1"></i>
+                  Print
+                </button>
+                </div>
+                <div class="table-responsive mt-2" id="invoice-POS">
+                  <div class="info mb-2">
+                    <h1
+                      style="
+                        font-size: 20px !important;
+                        font-weight: 700 !important;
+                        color: black !important;
+                      "
+                      class="text-center text-black"
+                    >
+                    AGRO
+                    </h1>
+                    <h3
+                      style="
+                        font-size: 20px !important;
+                        font-weight: 700 !important;
+                        color: black !important;
+                      "
+                      class="text-center text-black"
+                    >
+                    INDUSTRIAL PRODUCT AND SUPPLY MANAGEMENT SYSTEM 
+                    </h3>
+                    <h5
+                    style="
+                      font-size: 20px !important;
+                      font-weight: 700 !important;
+                      color: black !important;
+                    "
+                    class="text-center text-black"
+                  >
+                STOCK IN & STOCK OUT
+                  </h5>
+                    <!-- <p
+                      style="
+                        font-size: 12px !important;
+                        font-weight: 700 !important;
+                        color: black !important;
+                      "
+                      class="text-center text-black mb-3"
+                    >
+                      Purok-15 Bagontaas, Valencia City, Bukidnon
+                    </p> -->
+                    <p
+                      style="
+                        font-size: 12px !important;
+                        font-weight: 700 !important;
+                        color: black !important;
+                      "
+                      class="text-black" id="customer_info"
+                    >
+        
+                    </p>
+                  </div>
+                  <table
+                    class="table table-centered table-striped dt-responsive nowrap w-100"
+                    id="grandtotal-datatable"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Product Id</th>
+                        <th>Type</th>
+                        <th>Expire date</th>
+                        <th>Date Added</th>
+                        <th>Unit</th>
+                        <th>Cost</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {{#each products}} {{#if product_id}}
+                      <tr>
+                        <td>{{inc @index}}. {{product_id.name}}</td>
+                        <td>{{product_id.code}}</td>
+                        <td>{{type}}</td>
+                        <td class="{{expire_color expiry_date}}">
+                          {{#if expiry_date}} {{moment expiry_date
+                          'lll'}} {{/if}}
+                        </td>
+                        <td>
+                          {{#if createdAt}} {{moment createdAt 'MM/DD/YYYY'}}
+                          {{/if}}
+                        </td>
+                        <td>{{product_id.unit_id.name}}</td>
+                        <td>{{this.cost}}</td>
+                        <td>{{qty}}</td>
+                        <td>{{price}}</td>
+                        <td>{{#if this.total}} {{this.total}} {{/if}}</td>
+                      </tr>
+                      {{/if}} {{/each}} {{#each products}} {{#if
+                      this.grandTotal}}
+                      <tr>
+                        <td>
+                          <span style="font-weight: bold">Grand total</span>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <span style="font-weight: bold"
+                            >{{this.grandTotal}}</span
+                          >
+                        </td>
+                      </tr>
+                      {{/if}} {{/each}}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- end card-body-->
+            </div>
+            <!-- end card-->
+          </div>
+        </div>
+        <!-- end row -->
+      </div>
+
+      <!-- container -->
+    </div>
+  </div>
+</div>
+
+<script>
+  function search() {
+    let type = document.getElementById('type');
+    let fromDate = document.getElementById('fromDate');
+    let toDate = document.getElementById('toDate');
+    document.getElementById('myForm').submit();
+  }
+</script>
+<script>
+  function PrintElem(elem) {
+      var restorepage = $('body').html();
+      var printcontent = $('#' + elem).clone();
+      $('body').empty().html(printcontent);
+      window.print();
+      $('body').html(restorepage);
+      window.location.href = "/admin/general?message=Print successfully !!&alert=success";
+  }
+</script>

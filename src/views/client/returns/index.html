@@ -1,0 +1,109 @@
+<div class="wrapper">
+  {{> client-sidenav return-sales=true}}
+  <div class="content-page">
+    <div class="content">
+      {{> client-topnav}}
+
+      <!-- Start Content-->
+      <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+          <div class="col-12">
+            <div class="page-title-box">
+              <div class="page-title-right"></div>
+              <h4 class="page-title">Return</h4>
+            </div>
+          </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table
+                    class="table table-centered w-100 dt-responsive nowrap"
+                    id="data-datatable"
+                  >
+                    <thead class="table-light">
+                      <tr>
+                        <th class="all">Product</th>
+                        <th>Return Date</th>
+                        <th>Approved Date</th>
+                        <th>Note</th>
+                        <th>Quantity</th>
+                        <th>Approved By</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {{#each returns}}
+                      <tr>
+                        <td>
+                          <img
+                            src="{{this.product_id.img}}"
+                            alt="contact-img"
+                            title="contact-img"
+                            class="rounded me-3"
+                            height="64"
+                          />
+                          <p class="m-0 d-inline-block align-middle font-16">
+                            <a
+                              href="apps-ecommerce-products-details.html"
+                              class="text-body"
+                              >{{this.product_id.name}}</a
+                            >
+                            <br />
+                            <small class="me-2"
+                              ><b>Category:</b>
+                              {{this.product_id.category_id.name}}</small
+                            >
+                            <small
+                              ><b>Brand:</b> {{this.product_id.brand_id.name}}
+                            </small>
+                          </p>
+                        </td>
+                        <td class="fw-bold">
+                          {{moment this.dateReturn 'lll'}}
+                        </td>
+                        {{#if this.isApproved}}
+                        <td class="fw-bold">
+                          {{moment this.approve_date 'lll'}}
+                        </td>
+                        {{else}}
+                        <td>Not yet approved</td>
+                        {{/if}}
+
+                        <td class="fw-bold text-danger">
+                           {{ this.note}}
+                        </td>
+                        <td class="fw-bolder">{{comma this.qty}}</td>
+                        <td class="fw-bolder">
+                          {{this.approve_user_id.firstname}}
+                          {{this.approve_user_id.lastname}}
+                        </td>
+                        <td class="font-16">
+                          <span
+                            class="badge {{#ifCond this.status '===' 'request'}}bg-danger{{else}}bg-success{{/ifCond}}"
+                            >{{this.status}}</span
+                          >
+                        </td>
+                      </tr>
+                      {{/each}}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- end card-body-->
+            </div>
+            <!-- end card-->
+          </div>
+          <!-- end col -->
+        </div>
+        <!-- end row -->
+      </div>
+      <!-- container -->
+    </div>
+  </div>
+</div>

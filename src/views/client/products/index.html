@@ -1,0 +1,141 @@
+<div class="wrapper">
+  {{> client-sidenav}}
+  <div class="content-page">
+    <div class="content">
+      {{> client-topnav}}
+
+      <!-- Start Content-->
+      <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+          <div class="col-12">
+            <div class="page-title-box">
+              <div class="page-title-right"></div>
+              <h4 class="page-title">Products</h4>
+            </div>
+          </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table
+                    class="table table-centered w-100 dt-responsive nowrap"
+                    id="data-datatable"
+                  >
+                    <thead class="table-light">
+                      <tr>
+                        <th class="all">Product</th>
+                        <th>Added Date</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <!-- <th>Return</th> -->
+                        <th>Status</th>
+                        <th style="width: 85px">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- end card-body-->
+            </div>
+            <!-- end card-->
+          </div>
+          <!-- end col -->
+        </div>
+        <!-- end row -->
+      </div>
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="modal-delivery"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="myLargeModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="myLargeModalLabel">
+                Return Purchase
+              </h4>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-hidden="true"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form action="/client/product/return" method="POST">
+                <div id="sales_info">
+
+                </div>
+                <div class="mb-3">
+                    <input type="text" id="sales_id" name="sales_id"hidden />
+                    <input type="text" id="product_id" name="product_id"hidden />
+                    <input type="text" id="product_price" name="price"hidden />
+                  <label for="delivery_date" class="form-label mt-1"
+                    >Quantity <span class="unitSpan"></span
+                  ></label>
+                  <input
+                    name="qty"
+                    class="form-control"
+                    type="number"
+                    id="product_qty"
+                    required
+                  />
+                </div>
+                <div class="mb-3 col-12">
+                <label for="delivery_date" class="form-label mt-1"
+                  >Note <span class="unitSpan"></span
+                ></label>
+                <textarea
+                  name="note"
+                  class="form-control"
+                  id="note"
+                  required
+                ></textarea>
+              </div>
+                <div class="mb-3 text-center">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal -->
+      <!-- container -->
+    </div>
+  </div>
+</div>
+
+<!-- DISPLAY SALES -->
+<script>
+  $(document).ready(function () {
+    //set data to table
+    $.ajax({
+      type: "GET",
+      url: "/helpers/sales",
+      success: function (result) {
+        let total = 0;
+        var productTable = $("#data-datatable").DataTable();
+        console.log("resultsssssssssss", result);
+        result.map((res) => {
+          total += res?.qty * res?.price || 0;
+          dispalyEverySalesInTable(res, productTable);
+        });
+        dispalyEverySalesInTable(total, productTable, true);
+      },
+    }).fail(function (res) {
+      errorSweetAlert();
+    });
+  });
+</script>

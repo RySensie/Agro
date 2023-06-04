@@ -1,0 +1,243 @@
+<div class="wrapper">
+    {{> admin-sidenav damage=true}}
+    <div class="content-page">
+      <div class="content">
+        {{> admin-topnav}}
+  
+        <!-- Start Content-->
+        <div class="container-fluid">
+          <!-- start page title -->
+          <div class="row">
+            <div class="col-12">
+              <div class="page-title-box">
+                <div class="page-title-right"></div>
+                <h4 class="page-title">Damage</h4>
+              </div>
+            </div>
+          </div>
+          <!-- end page title -->
+  
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="col-4">
+                    <button
+                    type="button"
+                    class="btn btn-danger mb-3 me-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#add-modal"
+                  >
+                    <i class="mdi mdi-basket me-1"></i> Add Damage
+                  </button>
+                  <button
+                  class="btn btn-warning mb-3 ml-2"
+                  onclick="PrintElem('invoice-POS')"
+                >
+                  <i class="uil-print me-1"></i>
+                  Print
+                </button>
+                  </div>
+                  <div class="table-responsive"  id="invoice-POS">
+                    <div class="info mb-2">
+                      <h1
+                        style="
+                          font-size: 20px !important;
+                          font-weight: 700 !important;
+                          color: black !important;
+                        "
+                        class="text-center text-black"
+                      >
+                      AGRO
+                      </h1>
+                      <h3
+                        style="
+                          font-size: 20px !important;
+                          font-weight: 700 !important;
+                          color: black !important;
+                        "
+                        class="text-center text-black"
+                      >
+                      INDUSTRIAL PRODUCT AND SUPPLY MANAGEMENT SYSTEM 
+                      </h3>
+                      <h5
+                      style="
+                        font-size: 20px !important;
+                        font-weight: 700 !important;
+                        color: black !important;
+                      "
+                      class="text-center text-black"
+                    >
+                 DAMAGE ITEM
+                    </h5>
+                      <!-- <p
+                        style="
+                          font-size: 12px !important;
+                          font-weight: 700 !important;
+                          color: black !important;
+                        "
+                        class="text-center text-black mb-3"
+                      >
+                        Purok-15 Bagontaas, Valencia City, Bukidnon
+                      </p> -->
+                      <p
+                        style="
+                          font-size: 12px !important;
+                          font-weight: 700 !important;
+                          color: black !important;
+                        "
+                        class="text-black" id="customer_info"
+                      >
+          
+                      </p>
+                    </div>
+                    <table
+                      class="table table-centered w-100 dt-responsive nowrap"
+                      id="data-datatable"
+                    >
+                      <thead class="table-light">
+                        <tr>
+                          <th class="all">Product</th>
+                          <th>Return Date</th>
+                          <th>Quantity</th>
+                          <th>Customer</th>
+                          <th>Approved By</th>
+                          <th class="">Note</th>
+                          <th>Status</th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{#each damages}}
+                        <tr>
+                          <td>
+                            <img
+                              src="{{this.product_id.img}}"
+                              alt="contact-img"
+                              title="contact-img"
+                              class="rounded me-3"
+                              height="64"
+                            />
+                            <p class="m-0 d-inline-block align-middle font-16">
+                              <a
+                                href="apps-ecommerce-products-details.html"
+                                class="text-body"
+                                >{{this.product_id.name}}</a
+                              >
+                              <br />
+                              <small class="me-2"
+                                ><b>Category:</b>
+                                {{this.product_id.category_id.name}}</small
+                              >
+                              <small
+                                ><b>Brand:</b> {{this.product_id.brand_id.name}}
+                              </small>
+                            </p>
+                          </td>
+                          <td class="fw-bold">
+                            {{moment this.dateDamage 'lll'}}
+                          </td>
+                          <td class="fw-bolder">{{this.qty}}</td>
+                          <td class="fw-bolder">
+                            {{this.user_id.firstname}}
+                            {{this.user_id.lastname}}
+                          </td>
+                          <td class="fw-bolder">
+                            {{this.added_by.firstname}}
+                            {{this.added_by.lastname}}
+                          </td>
+                          <td class="text-danger">{{this.note}}</td>
+                          <td class="font-16">
+                            <span
+                              class="badge {{#ifCond this.status '===' 'request'}}bg-danger{{else}}bg-success{{/ifCond}}"
+                              >{{this.status}}</span
+                            >
+                          </td>
+                        
+                     
+                        </tr>
+                        {{/each}}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <!-- end card-body-->
+              </div>
+              <!-- end card-->
+            </div>
+            <!-- end col -->
+          </div>
+          <!-- end row -->
+        </div>
+        <!-- container -->
+      </div>
+    </div>
+  </div>
+  
+ <!-- ADD MODAL -->
+<div
+id="add-modal"
+class="modal fade"
+tabindex="-1"
+role="dialog"
+aria-hidden="true"
+>
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-body">
+      <div class="text-center my-4">
+        <span
+          ><img src="/assets/images/logo-dark.png" alt="" height="18"
+        /></span>
+      </div>
+      <form action="/admin/damage/create" method="POST">
+        <div class="mb-3">
+          <label for="user_id" class="form-label">Select Client</label>
+          <select
+            name="user_id"
+            class="form-control mb-2"
+            required
+            onchange="geSalesApproved('/get/client/sales/', this.value)"
+          >
+            <option value=""></option>
+            {{#each clients}}
+            <option value="{{this._id}}">{{this.firstname}} {{this.lastname}}</option>
+            {{/each}}
+          </select>
+          <label for="supplier_id" class="form-label">Select Sales</label>
+      <select name="sales_id" class="form-control mb-2" id="displaySales">
+     
+      </select>
+          <label for="qty" class="form-label">Quantity per <span class="unitSpan"></span
+            ></label>
+          <input name="qty" class="form-control" type="number" required />
+          <label for="note" class="form-label">Note <span class="unitSpan"></span
+            ></label>
+            <textarea class="form-control" name="note" rows="4" cols="50"></textarea>
+        </div>
+        <div class="mb-3 text-center">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+  
+  <script>
+    function approved(id) {
+      console.log('id', id);
+      $("#sales_id").val(id);
+      $(`#return_approved`).modal("show");
+  }
+  </script>
+  <script>
+    function PrintElem(elem) {
+        var restorepage = $('body').html();
+        var printcontent = $('#' + elem).clone();
+        $('body').empty().html(printcontent);
+        window.print();
+        $('body').html(restorepage);
+        window.location.href = "/admin/damage?message=Print successfully !!&alert=success";
+    }
+  </script>

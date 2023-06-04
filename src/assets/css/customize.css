@@ -1,0 +1,12 @@
+.customize-active {
+  color: white !important;
+}
+.m-hover {
+  cursor: pointer;
+}
+.simplebar-content-wrapper {
+  background-color: rgb(14, 13, 13);
+}
+.logo span.logo-lg {
+  background-color: rgb(14, 13, 13);
+}

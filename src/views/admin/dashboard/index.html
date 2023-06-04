@@ -1,0 +1,542 @@
+<div class="wrapper">
+  {{> admin-sidenav dashboard=true}}
+  <div class="content-page">
+    <div class="content">
+      {{> admin-topnav}}
+
+      <!-- Start Content-->
+      <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+          <div class="col-12">
+            <div class="page-title-box">
+              <div class="page-title-right"></div>
+              <h4 class="page-title">Dashboard</h4>
+            </div>
+          </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+          <div class="col-12">
+            <div class="card widget-inline">
+              <div class="card-body p-0">
+                <div class="row g-0">
+                  <div class="col-sm-6 col-lg-3">
+                    <div class="card shadow-none m-0">
+                      <div class="card-body text-center">
+                        <i
+                          class="mdi mdi-cart-outline"
+                          style="font-size: 24px"
+                        ></i>
+                        <h3><span>{{remainingStocks}}</span></h3>
+                        <p class="text-muted font-15 mb-0">Remaining Stocks</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6 col-lg-3">
+                    <div class="card shadow-none m-0 border-start">
+                      <div class="card-body text-center">
+                        <i
+                          class="mdi mdi-clock-outline text-muted"
+                          style="font-size: 24px"
+                        ></i>
+                        <h3><span id="pendingTask">0</span></h3>
+                        <p class="text-muted font-15 mb-0">
+                          Pending {{toUpperCharAt credentials.type}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6 col-lg-3">
+                    <div class="card shadow-none m-0 border-start">
+                      <div class="card-body text-center">
+                        <i
+                          class="dripicons-user-group text-muted"
+                          style="font-size: 24px"
+                        ></i>
+                        <h3><span>{{cntUser}}</span></h3>
+                        <p class="text-muted font-15 mb-0">Members</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6 col-lg-3">
+                    <div class="card shadow-none m-0 border-start">
+                      <div class="card-body text-center">
+                        <i
+                          class="dripicons-graph-line text-muted"
+                          style="font-size: 24px"
+                        ></i>
+                        <h3>
+                          <span id="totalGrandSales">0</span>
+                          <i class="mdi mdi-arrow-up text-success"></i>
+                        </h3>
+                        <p
+                          class="text-muted font-15 mb-0 m-hover"
+                          id="totalGrandSalesDate"
+                        ></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body py-4">
+                <div class="table-responsive">
+                  <table
+                    class="table table-centered table-nowrap mb-0"
+                    id="sales-datatable"
+                  >
+                    <thead class="table-light">
+                      <tr>
+                        <th>{{toUpperCharAt credentials.type}}</th>
+                        <th>Address</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Note</th>
+                        <th>Order Status</th>
+                        <th>Delivery Date</th>
+                        <th class="text-center" style="width: 125px">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- end card-body-->
+            </div>
+            <!-- end card-->
+          </div>
+          <!-- end col -->
+        </div>
+        <!-- end row -->
+        <div class="card">
+          <div class="card-body">
+            <h5>Remaining Stocks</h5>
+            <canvas id="myChart" height="50"></canvas>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 order-lg-2 order-xl-1">
+            <div class="card">
+              <div class="card-body">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-2"
+                >
+                  <h4 class="header-title">Top Selling Packages</h4>
+                </div>
+
+                <div class="table-responsive">
+                  <table
+                    class="table table-centered table-nowrap table-hover mb-0"
+                  >
+                    <tbody id="top-sales-datatable"></tbody>
+                  </table>
+                </div>
+                <!-- end table-responsive-->
+              </div>
+              <!-- end card-body-->
+            </div>
+            <!-- end card-->
+          </div>
+          <!-- end col-->
+          <!-- end col-->
+          <!-- end col -->
+        </div>
+        <!-- end row -->
+      </div>
+      <!-- container -->
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="modal-product"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Products</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-hidden="true"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table
+            class="table table-centered table-nowrap mb-0"
+            id="data-datatable"
+          >
+            <thead class="table-light">
+              <tr>
+                <th>Name</th>
+                <th>Expire Date</th>
+                <th>Price</th>
+                <th>Unit</th>
+                <th>Stocks</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <!-- <th>Date return</th> -->
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="text-sm-end">
+          <button class="btn btn-danger" onclick="checkOutProduct()">
+            <i class="mdi mdi-cart-plus me-1"></i>Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.modal -->
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="modal-delivery"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Create Delivery Date</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-hidden="true"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form action="/admin/sales/deliveryDate_add" method="POST">
+          <div class="mb-3">
+            <div class="sales_id">
+              <input type="text" id="user_id" name="user_id" hidden />
+            </div>
+            <label for="delivery_date" class="form-label mt-1"
+              >Delivery date <span class="unitSpan"></span
+            ></label>
+            <input
+              name="delivery_date"
+              class="form-control"
+              type="date"
+              required
+            />
+          </div>
+          <div class="mb-3 text-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.modal -->
+
+<!-- Small modal -->
+<!-- <div class="modal fade" id="modal-receipt" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true"> -->
+<div
+  class="modal fade"
+  id="modal-receipt"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+  data-backdrop="static"  
+  data-keyboard="false" 
+>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="mySmallModalLabel">Delivery Receipt</h4>
+        <button
+          type="button"
+          class="btn-close close"
+          data-bs-dismiss="modal"
+          aria-hidden="true"
+        ></button>
+      </div>
+      <div
+        class="modal-body"
+        style="
+          font-size: 15px !important;
+          font-weight: 700 !important;
+          color: black !important;
+        "
+      >
+        <div class="mx-0" id="invoice-POS">
+          <div class="info mb-2">
+            <h1
+              style="
+                font-size: 20px !important;
+                font-weight: 700 !important;
+                color: black !important;
+              "
+              class="text-center text-black"
+            >
+            AGRO
+            </h1>
+            <h3
+              style="
+                font-size: 20px !important;
+                font-weight: 700 !important;
+                color: black !important;
+              "
+              class="text-center text-black"
+            >
+            INDUSTRIAL PRODUCT AND SUPPLY MANAGEMENT SYSTEM 
+            </h3>
+            <h5
+            style="
+              font-size: 20px !important;
+              font-weight: 700 !important;
+              color: black !important;
+            "
+            class="text-center text-black"
+          >
+          DELIVERY RECEIPT
+          </h5>
+            <!-- <p
+              style="
+                font-size: 12px !important;
+                font-weight: 700 !important;
+                color: black !important;
+              "
+              class="text-center text-black mb-3"
+            >
+              Purok-15 Bagontaas, Valencia City, Bukidnon
+            </p> -->
+            <p
+              style="
+                font-size: 12px !important;
+                font-weight: 700 !important;
+                color: black !important;
+              "
+              class="text-black" id="customer_info"
+            >
+
+            </p>
+          </div>
+          <div class="table-responsive">
+            <table
+              class="table table-centered table-nowrap mb-0"
+              id="data-datatables"
+            >
+              <thead class="table-light">
+                <tr>
+                  <th>Name</th>
+                  <th>Expire Date</th>
+                  <th>Price</th>
+                  <th>Unit</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                  <!-- <th>Date return</th> -->
+                  <!-- <th>Action</th> -->
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <h5 class="text-center text-black mt-2">
+            THIS SERVES AS YOUR DELIVERY RECEIPT
+          </h5>
+        </div>
+
+        <div class="col-12 text-center">
+          <button
+          class="btn btn-warning"
+          onclick="PrintElem('invoice-POS')"
+        >
+          <i class="uil-print me-1"></i>
+          Print
+        </button>
+        </div>
+
+        <!---->
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<script>
+  $(document).ready(function () {
+    let labelsProduct = "{{labelsProduct}}";
+    let totalProduct = "{{totalProduct}}";
+    let colorProduct = "{{colorProduct}}";
+    labelsProduct = labelsProduct.split(",");
+    totalProduct = totalProduct.split(",");
+    colorProduct = colorProduct.replaceAll(",r", "r");
+    colorProduct = colorProduct.split("-");
+
+    const ctx = document.getElementById("myChart").getContext("2d");
+    const myChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: [...labelsProduct],
+        datasets: [
+          {
+            label: "Stocks",
+            data: [...totalProduct],
+            backgroundColor: [...colorProduct],
+            borderColor: [...colorProduct],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    $('#modal-receipt').modal({
+           backdrop: 'static',
+           keyboard: false
+    })
+    $(`.close`).click(function () {
+      window.location.href = "/admin/dashboard?message=Print cancelled !!&alert=error";
+    });
+    $("#info").empty();
+    $("#invoice_receipt").empty();
+    $("#cart_container_view").empty();
+    //data table config
+    dataTable("sales-datatable", 1);
+
+    //GET ALL PENDING SALES
+    $.ajax({
+      type: "GET",
+      url: `/get/sales/pending/all`,
+      success: function (result) {
+        console.log("result", result);
+        $("#pendingTask").html(result.cntPending);
+        var Datatable = $("#sales-datatable").DataTable();
+        result.allSales.map((res) => {
+          appendAllSales(
+            res,
+            Datatable,
+            "pending",
+            "Checkout",
+            "Delivery Date",
+            "Print"
+          );
+        });
+      },
+    }).fail(function (res) {
+      errorSweetAlert();
+    });
+
+    //GET ALL CLIENT USERS
+    $.ajax({
+      type: "GET",
+      url: `/get/all-user`,
+      success: function (result) {
+        result.map((r) => {
+          $(`#usersOption`).append(
+            `<option value="${r._id}">${r.firstname ? r.firstname : r.email} ${
+              r.lastname ? r.lastname : ""
+            }</option>`
+          );
+        });
+      },
+    }).fail(function (res) {
+      errorSweetAlert();
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    let getDateTotal = "today";
+    totalSalesDashboard();
+
+    $(`#totalGrandSalesDate`).click(function () {
+      totalSalesDashboard();
+    });
+    function totalSalesDashboard() {
+      $(`#top-sales-datatable`).html("");
+      $.ajax({
+        type: "GET",
+        url: `/get/total/sales/${getDateTotal}`,
+        success: function (result) {
+          $(`#totalGrandSales`).html(result.grandTotal);
+          result.products.map((r) => {
+            appendRowTopSales(r, "top-sales-datatable");
+          });
+        },
+      }).fail(function (res) {
+        errorSweetAlert();
+      });
+      let elem;
+      if (getDateTotal == "today") {
+        elem = `Sales ${getDateTotal} <i class="dripicons-chevron-right m-hover"></i>`;
+        getDateTotal = "all";
+      } else {
+        elem = `<i class="dripicons-chevron-left m-hover"></i> Over${getDateTotal} sales`;
+        getDateTotal = "today";
+      }
+      $(`#totalGrandSalesDate`).html(elem);
+    }
+  });
+</script>
+
+<script type="text/javascript">
+  function onScanSuccess(qrCodeMessage) {
+    $(`#product_id_qrcode`).val(qrCodeMessage);
+    $("#acceptBorrowProductBtn").click();
+  }
+
+  function onScanError(errorMessage) {
+    //handle scan error
+  }
+
+  var html5QrcodeScanner = new Html5QrcodeScanner("reader", {
+    fps: 10,
+    qrbox: 250,
+  });
+  html5QrcodeScanner.render(onScanSuccess, onScanError);
+</script>
+<script>
+  function PrintElem(elem) {
+      var restorepage = $('body').html();
+      var printcontent = $('#' + elem).clone();
+      $('body').empty().html(printcontent);
+      window.print();
+      $('body').html(restorepage);
+      window.location.href = "/admin/dashboard?message=Print successfully !!&alert=success";
+  }
+</script>
