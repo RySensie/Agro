@@ -3,39 +3,32 @@ module.exports = {
     dev: true,
   },
   hapi: {
-    port: process.env.HAPI_PORT,
+    port: '2025',
   },
   app: {
     name: 'AGRO',
     title: 'AGRO INDUSTRIAL PRODUCT AND SUPPLY MANAGEMENT SYSTEM',
   },
   mongodb_production: {
-    ip: process.env.MONGODB_PRODUCTION_IP,
-    port: process.env.MONGODB_PRODUCTION_PORT,
-    app: process.env.MONGODB_PRODUCTION_APP,
-    username: process.env.MONGODB_PRODUCTION_USERNAME,
-    password: process.env.MONGODB_PRODUCTION_PASSWORD,
+    ip:'127.0.0.1',
+    port: '2025',
+    app:'pos',
   },
   mongodb_local: {
-    ip: process.env.MONGODB_LOCAL_IP,
-    port: process.env.MONGODB_LOCAL_PORT,
-    app: process.env.MONGODB_LOCAL_APP,
+    ip:'127.0.0.1',
+    port: '2025',
+    app:'pos',
   },
   url: {
     local: '',
   },
   crypto: {
-    privateKey: process.env.CRYPTO_PRIVATE_KEY,
+    privateKey:
+      'agX/xoQ4d6erQ5TWeT4Tbjx6Fo8Ng+0lhxBpFTAvoy3UWGnirQuE00IOlaUfBQJ+p6XUsJfquk8q6+807VaRDaP5m1E07JVYgjMHzi24Sl1Q7EA4eY7vNGw91kN1EP3ucnyJh7hOnQbmvBmXEO/0j6RYkzY+WqdWiKSxdYgDNek=',
     tokenExpiry: 1 * 30 * 1000 * 60, //1 hour
   },
   validation: {
     username: /^[a-zA-Z0-9]{5,12}$/,
     password: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,12}$/,
-  },
-  smtp: {
-    host: 'smtp.gmail.com',
-    port: 587,
-    pass: process.env.GMAIL_PASSWORD,
-    email: process.env.GMAIL_EMAIL,
   },
 };
