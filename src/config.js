@@ -10,8 +10,12 @@ module.exports = {
     title: 'AGRO INDUSTRIAL PRODUCT AND SUPPLY MANAGEMENT SYSTEM',
   },
   mongodb_production: {
-    ip:'127.0.0.1',
-    app:'pos',
+    ip:'@agro.kbeirll.mongodb.net/',
+    app: 'pos',
+    username: 'atlasalgotech',
+    password: 'vjz5XuLus7NwSHpk',
+    // ip:'@agro.kbeirll.mongodb.net/',
+    // app:'pos',
   },
   mongodb_local: {
     ip:'127.0.0.1',
