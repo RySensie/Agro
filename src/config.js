@@ -12,7 +12,7 @@ module.exports = {
   mongodb_production: {
     ip:'@agro.kbeirll.mongodb.net/',
     app: 'pos',
-    username: 'atlasalgotech',
+    username: 'janryanl18',
     password: 'vjz5XuLus7NwSHpk',
     // ip:'@agro.kbeirll.mongodb.net/',
     // app:'pos',
