@@ -1,6 +1,6 @@
 module.exports = {
   env: {
-    dev: true,
+    dev: false,
   },
   hapi: {
     port: '2025',
